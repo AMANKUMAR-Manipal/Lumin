@@ -1,0 +1,86 @@
+/* Custom styles for object detection application */
+
+/* Image preview container */
+.image-preview {
+    width: 100%;
+    height: 300px;
+    border: 2px dashed #6c757d;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #2d3238;
+    margin-bottom: 1rem;
+}
+
+.preview-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #6c757d;
+}
+
+/* Result display */
+.result-image, .original-image {
+    max-height: 350px;
+    max-width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Tab styling */
+.nav-tabs .nav-link.active {
+    font-weight: bold;
+    border-color: transparent;
+    border-bottom: 3px solid #0d6efd;
+}
+
+/* Custom file upload */
+.custom-file-upload {
+    text-align: center;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+/* Footer styling */
+.footer {
+    margin-top: 30px;
+    padding: 20px 0;
+    border-top: 1px solid #343a40;
+}
+
+/* Adjust accordion buttons */
+.accordion-button:not(.collapsed) {
+    color: white;
+    background-color: rgba(13, 110, 253, 0.2);
+}
+
+/* Enhance table readability */
+.table-sm td, .table-sm th {
+    padding: 0.5rem;
+}
+
+/* Loading spinner */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Make result tabs more prominent */
+#detectionTabs .nav-link {
+    padding: 0.75rem 1.25rem;
+    font-weight: 500;
+}
+
+/* Responsive tweaks */
+@media (max-width: 767.98px) {
+    .result-image, .original-image {
+        max-height: 250px;
+    }
+    
+    #detectionTabs .nav-link {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+}

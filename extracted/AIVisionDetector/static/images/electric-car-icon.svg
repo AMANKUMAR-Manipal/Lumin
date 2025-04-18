@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="612" height="612" viewBox="0 0 612 612" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Plug and Wire -->
+    <path d="M200 120 L150 120 Q120 120 120 150 L120 300" stroke="#000" stroke-width="24"/>
+    <path d="M160 85 L160 155" stroke="#000" stroke-width="24"/>
+    <path d="M200 85 L200 155" stroke="#000" stroke-width="24"/>
+    <path d="M140 85 L220 85" stroke="#000" stroke-width="24"/>
+    
+    <!-- Lightning Circle -->
+    <circle cx="350" cy="150" r="60" fill="#24C9D7"/>
+    <path d="M350 110 L330 150 L360 150 L340 190" stroke="white" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Car Body -->
+    <path d="M420 300 L450 230 L280 230 L250 300 Z" fill="#24C9D7"/>
+    <path d="M120 300 L450 300 L485 350 L85 350 Z" fill="#FFF"/>
+    <path d="M120 300 L450 300 L485 350 L85 350 Z" stroke="#000" stroke-width="24"/>
+    
+    <!-- Wheels -->
+    <circle cx="150" cy="400" r="40" fill="white" stroke="#000" stroke-width="20"/>
+    <circle cx="150" cy="400" r="12" fill="#24C9D7"/>
+    <circle cx="420" cy="400" r="40" fill="white" stroke="#000" stroke-width="20"/>
+    <circle cx="420" cy="400" r="12" fill="#24C9D7"/>
+    
+    <!-- Details -->
+    <circle cx="300" cy="325" r="10" fill="#000"/>
+    <path d="M60 430 L100 430" stroke="#24C9D7" stroke-width="14" stroke-linecap="round"/>
+    <path d="M350 430 L390 430" stroke="#24C9D7" stroke-width="14" stroke-linecap="round"/>
+  </g>
+</svg>

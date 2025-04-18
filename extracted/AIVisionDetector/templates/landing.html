@@ -1,0 +1,569 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<!-- Hero Section with Professional Styling -->
+<section class="py-5 position-relative">
+    <div class="container">
+        <!-- Background Abstract Elements -->
+        <div class="position-absolute top-0 start-0 w-100 h-100 overflow-hidden" style="z-index: -1;">
+            <div class="position-absolute" style="width: 300px; height: 300px; background: radial-gradient(circle, rgba(220, 53, 69, 0.1) 0%, rgba(0, 0, 0, 0) 70%); top: -100px; left: -100px;"></div>
+            <div class="position-absolute" style="width: 500px; height: 500px; background: radial-gradient(circle, rgba(220, 53, 69, 0.05) 0%, rgba(0, 0, 0, 0) 70%); bottom: -250px; right: -250px;"></div>
+            <div class="position-absolute" style="width: 200px; height: 200px; border-radius: 50%; border: 1px solid rgba(220, 53, 69, 0.2); top: 50%; right: 10%; transform: translateY(-50%);"></div>
+        </div>
+        
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6" data-aos="fade-up" data-aos-duration="1000">
+                <span class="badge bg-danger px-3 py-2 mb-3">Enterprise-Grade AI</span>
+                <h1 class="display-4 fw-bold mb-4">
+                    <span class="text-danger">Lumin</span> <span class="text-white">AI Vision</span>
+                </h1>
+                <p class="lead mb-4 text-light">Advanced vehicle detection platform delivering precise traffic analysis through our proprietary multi-algorithm AI technology.</p>
+                
+                <div class="d-flex flex-wrap gap-3 mb-5">
+                    <a href="/detect" class="btn btn-danger btn-lg px-4 py-3 rounded-3 shadow-lg">
+                        <i class="fas fa-camera me-2"></i> Start Detection
+                    </a>
+                    <a href="/dashboard" class="btn btn-outline-light btn-lg px-4 py-3 rounded-3">
+                        <i class="fas fa-chart-bar me-2"></i> View Dashboard
+                    </a>
+                </div>
+                
+                <div class="row g-4 mt-2">
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-danger bg-opacity-10 p-3 me-3 flex-shrink-0">
+                                <i class="fas fa-tachometer-alt text-danger"></i>
+                            </div>
+                            <div>
+                                <h4 class="fs-6 fw-bold mb-1">High Performance</h4>
+                                <p class="text-muted small mb-0">Real-time processing</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-danger bg-opacity-10 p-3 me-3 flex-shrink-0">
+                                <i class="fas fa-crosshairs text-danger"></i>
+                            </div>
+                            <div>
+                                <h4 class="fs-6 fw-bold mb-1">Precision</h4>
+                                <p class="text-muted small mb-0">98.5% detection rate</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-danger bg-opacity-10 p-3 me-3 flex-shrink-0">
+                                <i class="fas fa-database text-danger"></i>
+                            </div>
+                            <div>
+                                <h4 class="fs-6 fw-bold mb-1">Enterprise-Ready</h4>
+                                <p class="text-muted small mb-0">PostgreSQL database</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1200">
+                <div class="position-relative hero-image-container">
+                    <!-- Main Hero Image with 3D Effect -->
+                    <div class="position-relative rounded-4 overflow-hidden border border-secondary shadow-lg" style="transform: perspective(1000px) rotateY(-5deg) rotateX(5deg); transform-style: preserve-3d;">
+                        <img src="https://images.unsplash.com/photo-1581221778465-5e2c3a52d1d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Car detection" class="img-fluid">
+                        
+                        <!-- Detection Boxes Animation -->
+                        <div class="position-absolute top-0 start-0 w-100 h-100" data-aos="fade-in" data-aos-delay="1000" data-aos-duration="500">
+                            <div class="detection-box car-box border border-success border-2 rounded position-absolute" style="width: 150px; height: 100px; top: 50%; left: 30%; transform: translate(-50%, -50%) translateZ(20px);">
+                                <div class="position-absolute top-0 start-0 translate-middle badge bg-success text-white">
+                                    <i class="fas fa-car-side me-1"></i> 98%
+                                </div>
+                            </div>
+                            <div class="detection-box person-box border border-danger border-2 rounded position-absolute" style="width: 80px; height: 70px; top: 60%; left: 60%; transform: translate(-50%, -50%) translateZ(20px);">
+                                <div class="position-absolute top-0 start-0 translate-middle badge bg-danger text-white">
+                                    <i class="fas fa-walking me-1"></i> 95%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative Elements -->
+                    <div class="position-absolute" style="width: 150px; height: 150px; border: 2px dashed rgba(220, 53, 69, 0.3); border-radius: 20px; top: -20px; right: -20px; z-index: -1;"></div>
+                    <div class="position-absolute" style="width: 80px; height: 80px; background: rgba(40, 167, 69, 0.1); border-radius: 12px; bottom: -15px; left: 30px; z-index: -1;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Brand Bar -->
+<section class="py-4 bg-dark bg-opacity-70 border-top border-bottom border-secondary">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-3 mb-3 mb-lg-0">
+                <p class="text-light mb-0 fw-bold">Trusted Technology:</p>
+            </div>
+            <div class="col-lg-9">
+                <div class="d-flex flex-wrap justify-content-around align-items-center">
+                    <div class="mx-3 my-2" data-aos="fade-up" data-aos-delay="100">
+                        <div class="text-muted d-flex align-items-center">
+                            <i class="fab fa-python fa-2x me-2"></i>
+                            <span class="fw-bold">Python</span>
+                        </div>
+                    </div>
+                    <div class="mx-3 my-2" data-aos="fade-up" data-aos-delay="200">
+                        <div class="text-muted d-flex align-items-center">
+                            <i class="fas fa-brain fa-2x me-2"></i>
+                            <span class="fw-bold">TensorFlow</span>
+                        </div>
+                    </div>
+                    <div class="mx-3 my-2" data-aos="fade-up" data-aos-delay="300">
+                        <div class="text-muted d-flex align-items-center">
+                            <i class="fas fa-camera fa-2x me-2"></i>
+                            <span class="fw-bold">OpenCV</span>
+                        </div>
+                    </div>
+                    <div class="mx-3 my-2" data-aos="fade-up" data-aos-delay="400">
+                        <div class="text-muted d-flex align-items-center">
+                            <i class="fas fa-database fa-2x me-2"></i>
+                            <span class="fw-bold">PostgreSQL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 my-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="badge bg-danger px-3 py-2 mb-3">Core Technology</span>
+            <h2 class="display-5 fw-bold">How Lumin Works</h2>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">Our proprietary multi-algorithm approach ensures unmatched accuracy in vehicle detection and classification</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <div class="card h-100 bg-dark border-danger hover-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="rounded-circle bg-danger p-3 me-3">
+                                <i class="fas fa-brain fa-lg text-white"></i>
+                            </div>
+                            <h3 class="h4 card-title mb-0">CNN Detection</h3>
+                        </div>
+                        <p class="card-text">Advanced Convolutional Neural Networks that excel at recognizing vehicles by analyzing complex visual patterns through multiple filter layers.</p>
+                        <hr class="my-4 border-secondary">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-danger p-2">95% Accuracy</span>
+                            <div class="text-muted small">
+                                <i class="fas fa-bolt me-1"></i> Fast inference
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                <div class="card h-100 bg-dark border-info hover-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="rounded-circle bg-info p-3 me-3">
+                                <i class="fas fa-project-diagram fa-lg text-white"></i>
+                            </div>
+                            <h3 class="h4 card-title mb-0">KNN Detection</h3>
+                        </div>
+                        <p class="card-text">K-Nearest Neighbors algorithm with HOG features provides optimized processing speed with reliable vehicle identification in various conditions.</p>
+                        <hr class="my-4 border-secondary">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-info p-2">Fast Processing</span>
+                            <div class="text-muted small">
+                                <i class="fas fa-tachometer-alt me-1"></i> Low latency
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                <div class="card h-100 bg-dark border-success hover-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="rounded-circle bg-success p-3 me-3">
+                                <i class="fas fa-box fa-lg text-white"></i>
+                            </div>
+                            <h3 class="h4 card-title mb-0">YOLOv3 Detection</h3>
+                        </div>
+                        <p class="card-text">State-of-the-art You Only Look Once (YOLO) architecture processes entire images in a single pass for real-time vehicle detection.</p>
+                        <hr class="my-4 border-secondary">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-success p-2">98% Detection Rate</span>
+                            <div class="text-muted small">
+                                <i class="fas fa-check-double me-1"></i> High precision
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Traffic Analysis Section -->
+<section class="py-5 bg-dark bg-opacity-50 rounded-4 border border-secondary">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5" data-aos="fade-right" data-aos-duration="1000">
+                <span class="badge bg-danger px-3 py-2 mb-3">Enterprise Solution</span>
+                <h2 class="display-6 fw-bold mb-4">Traffic Monitoring & Analysis</h2>
+                <p class="lead">Comprehensive vehicle detection platform for smart cities, traffic management, and security operations.</p>
+                
+                <div class="mt-4">
+                    <div class="d-flex mb-3 align-items-start" data-aos="fade-up" data-aos-delay="100">
+                        <div class="bg-danger text-white rounded-circle p-2 me-3 flex-shrink-0">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div>
+                            <h4 class="h6 fw-bold mb-1">Precise Vehicle Classification</h4>
+                            <p class="text-muted mb-0">Accurately identify and categorize cars, trucks, motorcycles, and buses</p>
+                        </div>
+                    </div>
+                    <div class="d-flex mb-3 align-items-start" data-aos="fade-up" data-aos-delay="200">
+                        <div class="bg-danger text-white rounded-circle p-2 me-3 flex-shrink-0">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div>
+                            <h4 class="h6 fw-bold mb-1">Real-time Data Analytics</h4>
+                            <p class="text-muted mb-0">Instantly process traffic patterns with comprehensive dashboard reporting</p>
+                        </div>
+                    </div>
+                    <div class="d-flex mb-3 align-items-start" data-aos="fade-up" data-aos-delay="300">
+                        <div class="bg-danger text-white rounded-circle p-2 me-3 flex-shrink-0">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div>
+                            <h4 class="h6 fw-bold mb-1">Multi-Algorithm Verification</h4>
+                            <p class="text-muted mb-0">Triple-verify detections with CNN, KNN, and YOLO for maximum accuracy</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="/dashboard" class="btn btn-outline-danger mt-4 px-4 py-2">
+                    <i class="fas fa-chart-line me-2"></i> See Analytics Dashboard
+                </a>
+            </div>
+            
+            <div class="col-lg-7" data-aos="fade-left" data-aos-duration="1000">
+                <div class="card bg-dark border-0 shadow-lg overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Traffic monitoring" class="img-fluid">
+                    <div class="card-img-overlay bg-dark bg-opacity-60 d-flex flex-column justify-content-end">
+                        <div class="detection-overlay-boxes">
+                            <!-- These boxes will be created and animated via JavaScript -->
+                        </div>
+                        <div class="detection-stats bg-dark bg-opacity-75 p-3 rounded-top border-top border-danger">
+                            <div class="d-flex flex-wrap gap-3">
+                                <div class="badge bg-light text-dark p-2">
+                                    <i class="fas fa-car text-danger me-1"></i> Cars: <span class="fw-bold">14</span>
+                                </div>
+                                <div class="badge bg-light text-dark p-2">
+                                    <i class="fas fa-truck text-danger me-1"></i> Trucks: <span class="fw-bold">3</span>
+                                </div>
+                                <div class="badge bg-light text-dark p-2">
+                                    <i class="fas fa-motorcycle text-danger me-1"></i> Motorcycles: <span class="fw-bold">2</span>
+                                </div>
+                                <div class="badge bg-light text-dark p-2">
+                                    <i class="fas fa-walking text-danger me-1"></i> Pedestrians: <span class="fw-bold">8</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Dashboard Preview -->
+<section class="py-5 my-5">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6" data-aos="fade-up" data-aos-duration="1000">
+                <div class="card bg-dark border-0 shadow-lg h-100 dashboard-preview">
+                    <div class="card-header bg-dark border-0 p-4 d-flex align-items-center">
+                        <i class="fas fa-chart-line text-danger me-3 fa-lg"></i>
+                        <h3 class="h4 mb-0">Analytics Dashboard</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card bg-dark bg-opacity-50 border border-secondary">
+                                    <div class="card-body">
+                                        <h5 class="card-title h6 text-muted">Vehicles Detected</h5>
+                                        <h2 class="display-6 fw-bold text-danger">1,248</h2>
+                                        <div class="small text-success">
+                                            <i class="fas fa-arrow-up me-1"></i> 14.5% increase
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-dark bg-opacity-50 border border-secondary">
+                                    <div class="card-body">
+                                        <h5 class="card-title h6 text-muted">Avg. Confidence</h5>
+                                        <h2 class="display-6 fw-bold text-info">94.7%</h2>
+                                        <div class="small text-success">
+                                            <i class="fas fa-arrow-up me-1"></i> 3.2% increase
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <p class="fw-bold">Lumin AI Vision provides comprehensive analytics:</p>
+                            <ul class="list-group list-group-flush bg-transparent">
+                                <li class="list-group-item bg-dark text-light border-secondary py-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i> Real-time object detection statistics
+                                </li>
+                                <li class="list-group-item bg-dark text-light border-secondary py-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i> Algorithm performance comparison
+                                </li>
+                                <li class="list-group-item bg-dark text-light border-secondary py-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i> Historical data tracking and trend analysis
+                                </li>
+                                <li class="list-group-item bg-dark text-light border-secondary py-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i> Vehicle type distribution insights
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-dark border-0 p-4">
+                        <a href="/dashboard" class="btn btn-danger px-4 py-2 w-100">
+                            <i class="fas fa-chart-bar me-2"></i> View Full Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                <span class="badge bg-danger px-3 py-2 mb-3">Enterprise Analytics</span>
+                <h2 class="display-6 fw-bold mb-4">Advanced Data Insights</h2>
+                <p class="lead">Transform raw detections into actionable traffic intelligence with our comprehensive analytics platform.</p>
+                
+                <div class="mt-4">
+                    <div class="d-flex mb-4 align-items-start" data-aos="fade-up" data-aos-delay="100">
+                        <div class="bg-dark rounded-circle p-3 me-3 flex-shrink-0 border border-danger">
+                            <i class="fas fa-chart-pie text-danger"></i>
+                        </div>
+                        <div>
+                            <h4 class="h5 fw-bold mb-2">Vehicle Type Distribution</h4>
+                            <p class="text-muted mb-0">Analyze traffic composition with detailed breakdowns of vehicle categories</p>
+                        </div>
+                    </div>
+                    <div class="d-flex mb-4 align-items-start" data-aos="fade-up" data-aos-delay="200">
+                        <div class="bg-dark rounded-circle p-3 me-3 flex-shrink-0 border border-danger">
+                            <i class="fas fa-clock text-danger"></i>
+                        </div>
+                        <div>
+                            <h4 class="h5 fw-bold mb-2">Processing Time Analysis</h4>
+                            <p class="text-muted mb-0">Compare algorithm performance with detailed processing time metrics</p>
+                        </div>
+                    </div>
+                    <div class="d-flex mb-4 align-items-start" data-aos="fade-up" data-aos-delay="300">
+                        <div class="bg-dark rounded-circle p-3 me-3 flex-shrink-0 border border-danger">
+                            <i class="fas fa-bullseye text-danger"></i>
+                        </div>
+                        <div>
+                            <h4 class="h5 fw-bold mb-2">Confidence Score Tracking</h4>
+                            <p class="text-muted mb-0">Monitor detection reliability with comprehensive confidence analysis</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert bg-dark bg-opacity-50 border border-secondary mt-4" role="alert">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="fas fa-info-circle text-info fa-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="alert-heading h6 fw-bold">Enterprise Integration Available</h4>
+                            <p class="mb-0 small">Lumin AI Vision can integrate with your existing traffic management systems through our secure API.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 mt-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto" data-aos="fade-up">
+                <div class="card border-0 rounded-4 shadow-lg bg-gradient-dark">
+                    <div class="card-body p-5 text-center">
+                        <span class="badge bg-danger px-3 py-2 mb-3">Get Started Now</span>
+                        <h2 class="display-6 fw-bold mb-4">Ready to experience Lumin AI Vision?</h2>
+                        <p class="lead mb-4 mx-auto" style="max-width: 700px;">Upload your traffic images and see our advanced AI algorithms in action with real-time detection results</p>
+                        <a href="/detect" class="btn btn-danger btn-lg px-5 py-3 rounded-3 shadow-lg" data-aos="zoom-in" data-aos-delay="200">
+                            <i class="fas fa-camera me-2"></i> Start Detection Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<!-- AOS (Animate on Scroll) Library -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize AOS animation library
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        mirror: false
+    });
+    
+    // Traffic Analysis Detection Boxes Animation
+    createDetectionBoxes();
+    
+    // Scroll effects
+    window.addEventListener('scroll', function() {
+        let scrollPosition = window.scrollY;
+        
+        // Parallax effect for hero image
+        const heroImage = document.querySelector('.hero-image-container');
+        if (heroImage) {
+            heroImage.style.transform = `translateY(${scrollPosition * 0.05}px)`;
+        }
+        
+        // Dashboard preview animation
+        const dashboard = document.querySelector('.dashboard-preview');
+        if (dashboard && isInViewport(dashboard)) {
+            dashboard.classList.add('animate__animated', 'animate__fadeIn');
+        }
+    });
+    
+    // Create animated detection boxes for the traffic image
+    function createDetectionBoxes() {
+        const overlay = document.querySelector('.detection-overlay-boxes');
+        if (!overlay) return;
+        
+        // Vehicle detection data
+        const detections = [
+            {type: 'car', x: '20%', y: '60%', width: '120px', height: '70px', color: 'success', confidence: '96%', delay: 100},
+            {type: 'car', x: '40%', y: '70%', width: '100px', height: '60px', color: 'success', confidence: '94%', delay: 300},
+            {type: 'truck', x: '70%', y: '65%', width: '180px', height: '90px', color: 'warning', confidence: '92%', delay: 500},
+            {type: 'person', x: '85%', y: '75%', width: '50px', height: '80px', color: 'danger', confidence: '89%', delay: 700},
+            {type: 'motorcycle', x: '50%', y: '80%', width: '80px', height: '50px', color: 'info', confidence: '87%', delay: 900}
+        ];
+        
+        // Create and append detection boxes
+        detections.forEach(detection => {
+            const box = document.createElement('div');
+            box.className = `detection-box border border-${detection.color} border-2 rounded position-absolute animate__animated animate__fadeIn animate__delay-${detection.delay}ms`;
+            box.style.width = detection.width;
+            box.style.height = detection.height;
+            box.style.top = detection.y;
+            box.style.left = detection.x;
+            box.style.transform = 'translate(-50%, -50%)';
+            
+            const badge = document.createElement('div');
+            badge.className = `position-absolute top-0 start-0 translate-middle badge bg-${detection.color} text-white`;
+            badge.innerHTML = `<i class="fas fa-${detection.type === 'person' ? 'walking' : detection.type === 'motorcycle' ? 'motorcycle' : detection.type === 'truck' ? 'truck' : 'car'} me-1"></i> ${detection.confidence}`;
+            
+            box.appendChild(badge);
+            overlay.appendChild(box);
+        });
+    }
+    
+    // Helper function to check if element is in viewport
+    function isInViewport(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+            rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.bottom >= 0
+        );
+    }
+});
+</script>
+
+<style>
+/* Professional styling */
+.text-gradient {
+    background: linear-gradient(90deg, #ff3c3c, #ff6a3c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hover-card {
+    transition: all 0.3s ease;
+    border-width: 2px;
+}
+
+.hover-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2) !important;
+}
+
+.bg-gradient-dark {
+    background: radial-gradient(circle at top right, #343a40, #1a1e21);
+}
+
+/* Detection box animation */
+.detection-box {
+    opacity: 0;
+    animation: pulse 2s infinite;
+}
+
+.car-box {
+    animation-delay: 0.5s;
+}
+
+.person-box {
+    animation-delay: 1s;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 5px rgba(255, 255, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+}
+
+/* Dashboard animations */
+.dashboard-preview {
+    transition: all 0.5s ease;
+}
+
+/* Fancy border effect */
+.border-fancy {
+    position: relative;
+    border: none !important;
+}
+
+.border-fancy::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    border-radius: inherit;
+    z-index: -1;
+}
+</style>
+{% endblock %}

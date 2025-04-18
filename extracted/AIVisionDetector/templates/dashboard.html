@@ -1,0 +1,309 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">Object Detection Dashboard</h3>
+            </div>
+            <div class="card-body">
+                <p class="lead">Real-time analytics for object detection results</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Object Detection Stats -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-info text-white">
+                <h4 class="card-title mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>Detection Statistics
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-6 mb-3">
+                        <div class="p-3 bg-light rounded">
+                            <h2 class="display-5">{{ stats.total_images }}</h2>
+                            <p class="mb-0">Images Processed</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="p-3 bg-light rounded">
+                            <h2 class="display-5">{{ stats.total_objects }}</h2>
+                            <p class="mb-0">Objects Detected</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <h5>Recent Processing Times (seconds)</h5>
+                    <canvas id="processingTimeChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Traffic Analysis -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-success text-white">
+                <h4 class="card-title mb-0">
+                    <i class="fas fa-car me-2"></i>Traffic Analysis
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-6">
+                        <div class="p-3 border rounded text-center">
+                            <h3>{{ stats.vehicle_count }}</h3>
+                            <p class="mb-0 small">Vehicles</p>
+                            <div class="mt-2 text-muted small">
+                                Cars: {{ stats.class_counts.car|default(0) }}<br>
+                                Trucks: {{ stats.class_counts.truck|default(0) }}<br>
+                                Buses: {{ stats.class_counts.bus|default(0) }}<br>
+                                Motorcycles: {{ stats.class_counts.motorcycle|default(0) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3 border rounded text-center">
+                            <h3>{{ stats.person_count }}</h3>
+                            <p class="mb-0 small">Pedestrians</p>
+                            <div class="mt-2 text-muted small">
+                                Average confidence: {{ "%.2f"|format(stats.person_confidence * 100) }}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h5>Object Distribution</h5>
+                    <canvas id="objectDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Algorithm Comparison -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="card-title mb-0">
+                    <i class="fas fa-balance-scale me-2"></i>Algorithm Performance
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Algorithm</th>
+                                <th>Objects Detected</th>
+                                <th>Avg. Confidence</th>
+                                <th>Avg. Time (s)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for algo, data in stats.algorithm_stats.items() %}
+                            <tr>
+                                <td>{{ algo|upper }}</td>
+                                <td>{{ data.count }}</td>
+                                <td>{{ "%.2f"|format(data.confidence * 100) }}%</td>
+                                <td>{{ "%.3f"|format(data.time) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-3">
+                    <canvas id="algorithmComparisonChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Detections -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-secondary text-white">
+                <h4 class="card-title mb-0">
+                    <i class="fas fa-history me-2"></i>Recent Detections
+                </h4>
+            </div>
+            <div class="card-body">
+                {% if stats.recent_detections %}
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Algorithm</th>
+                                <th>Objects</th>
+                                <th>Confidence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for detection in stats.recent_detections %}
+                            <tr>
+                                <td>{{ detection.time }}</td>
+                                <td>{{ detection.algorithm|upper }}</td>
+                                <td>
+                                    {% for obj in detection.objects[:3] %}
+                                    <span class="badge bg-secondary">{{ obj }}</span>
+                                    {% endfor %}
+                                    {% if detection.objects|length > 3 %}
+                                    <span class="badge bg-secondary">+{{ detection.objects|length - 3 }} more</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ "%.2f"|format(detection.confidence * 100) }}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-secondary">
+                    No recent detections found.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Recent Images with Detections -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <h4 class="card-title mb-0">
+                    <i class="fas fa-images me-2"></i>Recent Images
+                </h4>
+            </div>
+            <div class="card-body">
+                {% if stats.recent_images %}
+                <div class="row">
+                    {% for image in stats.recent_images %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-img-top position-relative">
+                                <img src="{{ url_for('static', filename=image.path) }}" alt="Detection result" class="img-fluid rounded">
+                                <div class="position-absolute bottom-0 start-0 bg-dark bg-opacity-75 text-white p-2 small">
+                                    <i class="fas fa-object-group me-1"></i>{{ image.object_count }} objects
+                                </div>
+                                <div class="position-absolute top-0 end-0 bg-info bg-opacity-75 text-white p-2 small">
+                                    {{ image.algorithm|upper }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-secondary">
+                    No recent images found.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Processing Time Chart
+    new Chart(document.getElementById('processingTimeChart'), {
+        type: 'line',
+        data: {
+            labels: {{ stats.time_labels|safe }},
+            datasets: [{
+                label: 'Processing Time (s)',
+                data: {{ stats.processing_times|safe }},
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Object Distribution Chart
+    new Chart(document.getElementById('objectDistributionChart'), {
+        type: 'pie',
+        data: {
+            labels: {{ stats.distribution_labels|safe }},
+            datasets: [{
+                data: {{ stats.distribution_data|safe }},
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(255, 159, 64, 0.7)',
+                    'rgba(201, 203, 207, 0.7)'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'right',
+                }
+            }
+        }
+    });
+
+    // Algorithm Comparison Chart
+    new Chart(document.getElementById('algorithmComparisonChart'), {
+        type: 'radar',
+        data: {
+            labels: ['Detection Count', 'Confidence', 'Speed'],
+            datasets: [
+                {% for algo, data in stats.algorithm_stats.items() %}
+                {
+                    label: '{{ algo|upper }}',
+                    data: [
+                        {{ data.normalized_count }},
+                        {{ data.normalized_confidence }},
+                        {{ data.normalized_speed }}
+                    ],
+                    fill: true,
+                    backgroundColor: 'rgba({{ 54 + loop.index0 * 70 }}, {{ 162 - loop.index0 * 30 }}, {{ 235 - loop.index0 * 50 }}, 0.2)',
+                    borderColor: 'rgba({{ 54 + loop.index0 * 70 }}, {{ 162 - loop.index0 * 30 }}, {{ 235 - loop.index0 * 50 }}, 1)',
+                }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                r: {
+                    angleLines: {
+                        display: true
+                    },
+                    min: 0,
+                    max: 1
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="612" height="612" viewBox="0 0 612 612" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Road background -->
+    <rect x="50" y="100" width="512" height="412" rx="15" fill="#212529"/>
+    
+    <!-- Road markings -->
+    <path d="M100 306 L200 306" stroke="#ffffff" stroke-width="10" stroke-dasharray="40 20"/>
+    <path d="M250 306 L350 306" stroke="#ffffff" stroke-width="10" stroke-dasharray="40 20"/>
+    <path d="M400 306 L500 306" stroke="#ffffff" stroke-width="10" stroke-dasharray="40 20"/>
+    
+    <!-- Car 1 - Left car with taillights -->
+    <rect x="120" y="200" width="120" height="60" rx="10" fill="#333333" stroke="#000" stroke-width="2"/>
+    <rect x="130" y="180" width="100" height="40" rx="8" fill="#333333" stroke="#000" stroke-width="2"/>
+    <circle cx="145" cy="260" r="15" fill="#222222" stroke="#000" stroke-width="2"/>
+    <circle cx="215" cy="260" r="15" fill="#222222" stroke="#000" stroke-width="2"/>
+    <rect x="125" y="215" width="20" height="15" rx="3" fill="#ff3333"/>
+    <rect x="215" y="215" width="20" height="15" rx="3" fill="#ff3333"/>
+    
+    <!-- Car 2 - Right car -->
+    <rect x="350" y="350" width="120" height="60" rx="10" fill="#555555" stroke="#000" stroke-width="2"/>
+    <rect x="360" y="330" width="100" height="40" rx="8" fill="#555555" stroke="#000" stroke-width="2"/>
+    <circle cx="375" cy="410" r="15" fill="#222222" stroke="#000" stroke-width="2"/>
+    <circle cx="445" cy="410" r="15" fill="#222222" stroke="#000" stroke-width="2"/>
+    <rect x="355" y="365" width="20" height="15" rx="3" fill="#ff3333"/>
+    <rect x="445" y="365" width="20" height="15" rx="3" fill="#ff3333"/>
+    
+    <!-- Traffic light -->
+    <rect x="500" y="150" width="40" height="100" rx="5" fill="#333333" stroke="#000" stroke-width="3"/>
+    <rect x="490" y="130" width="60" height="20" rx="5" fill="#333333" stroke="#000" stroke-width="3"/>
+    <rect x="495" y="250" width="50" height="10" rx="3" fill="#333333" stroke="#000" stroke-width="3"/>
+    <circle cx="520" cy="175" r="12" fill="#ff3333"/>
+    <circle cx="520" cy="200" r="12" fill="#ffff33"/>
+    <circle cx="520" cy="225" r="12" fill="#33cc33"/>
+    
+    <!-- Detection elements -->
+    <rect x="120" y="180" width="120" height="80" fill="none" stroke="#24C9D7" stroke-width="3" stroke-dasharray="10 5"/>
+    <rect x="350" y="330" width="120" height="80" fill="none" stroke="#24C9D7" stroke-width="3" stroke-dasharray="10 5"/>
+    
+    <!-- Analysis elements -->
+    <circle cx="180" cy="220" r="40" fill="none" stroke="#ff3c3c" stroke-width="3" stroke-dasharray="10 5" opacity="0.7"/>
+    <circle cx="410" cy="370" r="40" fill="none" stroke="#ff3c3c" stroke-width="3" stroke-dasharray="10 5" opacity="0.7"/>
+  </g>
+</svg>

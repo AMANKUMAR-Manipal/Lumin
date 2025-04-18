@@ -1,0 +1,546 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Welcome section with animated feature highlights -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card border-0 bg-dark text-white shadow-lg rounded-4" data-aos="fade-up" data-aos-duration="800">
+                <div class="card-body p-5">
+                    <div class="row align-items-center">
+                        <div class="col-lg-7">
+                            <h1 class="display-4 fw-bold mb-3" data-aos="fade-up" data-aos-duration="1000">AI Object Detection</h1>
+                            <p class="lead mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">Upload any image and our advanced AI algorithms will automatically detect and identify objects, with special focus on traffic-related elements like vehicles and pedestrians.</p>
+                            <div class="d-flex flex-wrap gap-2 mb-4">
+                                <div class="badge bg-primary p-2 fs-6" data-aos="fade-up" data-aos-delay="200">
+                                    <i class="fas fa-car me-1"></i> Vehicle Detection
+                                </div>
+                                <div class="badge bg-info p-2 fs-6" data-aos="fade-up" data-aos-delay="300">
+                                    <i class="fas fa-walking me-1"></i> Pedestrian Recognition
+                                </div>
+                                <div class="badge bg-warning p-2 fs-6" data-aos="fade-up" data-aos-delay="400">
+                                    <i class="fas fa-traffic-light me-1"></i> Traffic Elements
+                                </div>
+                                <div class="badge bg-success p-2 fs-6" data-aos="fade-up" data-aos-delay="500">
+                                    <i class="fas fa-chart-pie me-1"></i> Detection Statistics
+                                </div>
+                            </div>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light me-2" data-aos="fade-up" data-aos-delay="600">
+                                <i class="fas fa-chart-bar me-1"></i> View Dashboard
+                            </a>
+                        </div>
+                        <div class="col-lg-5 text-center">
+                            <div class="position-relative">
+                                <img src="https://images.unsplash.com/photo-1585859537744-6e62df9b9a5b?ixlib=rb-4.0.3&q=85&w=500&h=350&crop=fit" alt="Traffic scene" class="img-fluid rounded-3 shadow-lg">
+                                <!-- Animated detection boxes overlay -->
+                                <div class="position-absolute" style="top: 40%; left: 30%; border: 3px solid #28a745; width: 30%; height: 30%; border-radius: 4px; animation: pulse-green 2s infinite;"></div>
+                                <div class="position-absolute" style="top: 55%; left: 15%; border: 3px solid #007bff; width: 20%; height: 20%; border-radius: 4px; animation: pulse-blue 2s infinite; animation-delay: 0.5s;"></div>
+                                <div class="position-absolute" style="top: 60%; left: 60%; border: 3px solid #dc3545; width: 15%; height: 25%; border-radius: 4px; animation: pulse-red 2s infinite; animation-delay: 1s;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Upload card with enhanced UI -->
+        <div class="col-lg-7" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+            <div class="card border-0 shadow-lg rounded-4 mb-4">
+                <div class="card-header bg-primary text-white py-3 rounded-top-4">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-upload me-2"></i>Upload Your Image
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" id="upload-form" data-aos="fade-up" data-aos-delay="100">
+                        <div class="mb-4">
+                            <div class="upload-container">
+                                <div id="image-preview" class="image-preview border rounded-4 p-3 text-center position-relative overflow-hidden" style="background-color: rgba(0,0,0,0.03); min-height: 250px;">
+                                    <div class="preview-placeholder d-flex flex-column align-items-center justify-content-center h-100">
+                                        <i class="fas fa-cloud-upload-alt fa-4x mb-3 text-primary"></i>
+                                        <h5>Drag & drop your image here</h5>
+                                        <p class="text-muted">or click the button below</p>
+                                    </div>
+                                    <img id="preview-img" src="" alt="Preview" class="img-fluid rounded-3" style="display: none; max-height: 350px;">
+                                    
+                                    <!-- Image size indicator that appears when image is selected -->
+                                    <div id="image-info" class="position-absolute bottom-0 end-0 bg-dark bg-opacity-75 text-white px-3 py-1 m-2 rounded-pill" style="display: none;">
+                                        <small><i class="fas fa-info-circle me-1"></i> <span id="image-dimensions">0 x 0</span></small>
+                                    </div>
+                                </div>
+                                
+                                <div class="custom-file-upload mt-3 text-center">
+                                    <label for="file" class="btn btn-primary btn-lg w-100 rounded-pill">
+                                        <i class="fas fa-image me-2"></i> Select Image
+                                    </label>
+                                    <input type="file" name="file" id="file" class="d-none" accept="image/png, image/jpeg, image/jpg" required>
+                                    <div class="mt-2 text-muted small">
+                                        <i class="fas fa-info-circle me-1"></i> Supported formats: JPG, PNG (max 16MB)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="algorithm-selection bg-dark bg-opacity-50 p-4 rounded-4 mb-4 border border-secondary">
+                            <h5 class="mb-3 border-bottom border-secondary pb-2">
+                                <i class="fas fa-cogs me-2"></i> Detection Algorithms
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="card bg-dark border-danger h-100">
+                                        <div class="card-body">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" name="algorithms" value="cnn" id="cnn-check" checked>
+                                                <label class="form-check-label fw-bold text-white" for="cnn-check">
+                                                    <i class="fas fa-brain me-1 text-danger"></i> CNN
+                                                </label>
+                                            </div>
+                                            <div class="mt-2 text-light small">
+                                                Convolutional Neural Network - best for detecting vehicles and complex objects
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-dark border-info h-100">
+                                        <div class="card-body">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" name="algorithms" value="knn" id="knn-check" checked>
+                                                <label class="form-check-label fw-bold text-white" for="knn-check">
+                                                    <i class="fas fa-project-diagram me-1 text-info"></i> KNN
+                                                </label>
+                                            </div>
+                                            <div class="mt-2 text-light small">
+                                                K-Nearest Neighbors - fast processing with reliable results
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-dark border-success h-100">
+                                        <div class="card-body">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" name="algorithms" value="yolov3" id="yolo-check" checked>
+                                                <label class="form-check-label fw-bold text-white" for="yolo-check">
+                                                    <i class="fas fa-box me-1 text-success"></i> YOLOv3
+                                                </label>
+                                            </div>
+                                            <div class="mt-2 text-light small">
+                                                You Only Look Once - high accuracy for all types of objects
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success btn-lg px-5 py-3 rounded-pill shadow" id="detect-btn" disabled>
+                                <i class="fas fa-search me-2"></i> Detect Objects
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Info card with algorithm details -->
+        <div class="col-lg-5" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+            <div class="card border-0 shadow-lg rounded-4 mb-4">
+                <div class="card-header bg-info text-white py-3 rounded-top-4">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i> How It Works
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <p class="lead">Our system uses three advanced AI algorithms to analyze your images with high accuracy.</p>
+                    
+                    <div class="accordion" id="algorithmAccordion">
+                        <div class="accordion-item border-0 mb-3 shadow-sm rounded-3">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="fas fa-brain me-2 text-danger"></i> CNN Detection
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#algorithmAccordion">
+                                <div class="accordion-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="flex-shrink-0">
+                                            <span class="badge bg-danger p-2"><i class="fas fa-star"></i> 95%</span>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <strong>Accuracy for vehicles</strong>
+                                        </div>
+                                    </div>
+                                    <p>Convolutional Neural Network using <strong>MobileNetV2</strong> architecture that excels at identifying various types of vehicles and objects in urban settings. It analyzes image patterns through multiple layers of filters.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0 mb-3 shadow-sm rounded-3">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="fas fa-project-diagram me-2 text-info"></i> KNN Detection
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#algorithmAccordion">
+                                <div class="accordion-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="flex-shrink-0">
+                                            <span class="badge bg-info p-2"><i class="fas fa-tachometer-alt"></i> Fast</span>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <strong>Quick processing time</strong>
+                                        </div>
+                                    </div>
+                                    <p>K-Nearest Neighbors classifier with HOG (Histogram of Oriented Gradients) features that efficiently detects objects using a sliding window approach. KNN is especially good at recognizing similar objects with consistent features.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0 shadow-sm rounded-3">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    <i class="fas fa-box me-2 text-success"></i> YOLOv3 Detection
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#algorithmAccordion">
+                                <div class="accordion-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="flex-shrink-0">
+                                            <span class="badge bg-success p-2"><i class="fas fa-check-double"></i> 98%</span>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <strong>Overall detection rate</strong>
+                                        </div>
+                                    </div>
+                                    <p><strong>You Only Look Once</strong> (YOLO) is a state-of-the-art, real-time object detection system. It processes the entire image in a single pass, making it extremely efficient while maintaining high accuracy for all kinds of objects.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 p-3 bg-dark bg-opacity-50 rounded-3 border border-secondary">
+                        <h5>
+                            <i class="fas fa-chart-line me-2 text-info"></i> Results Comparison
+                        </h5>
+                        <p class="mb-0 text-light">After processing, you'll see a detailed comparison of how each algorithm performed, with confidence scores and processing times.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent detection examples -->
+    <div class="row mt-2">
+        <div class="col-12" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+            <div class="card border-0 shadow-lg rounded-4">
+                <div class="card-header bg-secondary text-white py-3 rounded-top-4">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-history me-2"></i> Recent Detections
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <img src="https://images.unsplash.com/photo-1535591273668-578e31182c4f?ixlib=rb-4.0.3&q=85&w=400&h=300&crop=fit" class="card-img-top" alt="Urban traffic">
+                                <div class="card-body">
+                                    <h5 class="card-title">Urban Traffic Scene</h5>
+                                    <p class="card-text text-muted">Detected 8 vehicles, 12 pedestrians and 3 traffic signals</p>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <span class="badge bg-success">YOLOv3</span>
+                                    <span class="badge bg-info">KNN</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-4.0.3&q=85&w=400&h=300&crop=fit" class="card-img-top" alt="Red car">
+                                <div class="card-body">
+                                    <h5 class="card-title">Vehicle Close-up</h5>
+                                    <p class="card-text text-muted">Detected 1 car with 98.5% confidence</p>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <span class="badge bg-danger">CNN</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <img src="https://images.unsplash.com/photo-1517420704952-d9f39e95b43e?ixlib=rb-4.0.3&q=85&w=400&h=300&crop=fit" class="card-img-top" alt="Traffic intersection">
+                                <div class="card-body">
+                                    <h5 class="card-title">Traffic Intersection</h5>
+                                    <p class="card-text text-muted">Detected 15 vehicles, 8 pedestrians and 4 traffic lights</p>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <span class="badge bg-success">YOLOv3</span>
+                                    <span class="badge bg-danger">CNN</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize AOS (Animate on Scroll)
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+    }
+    
+    // Check if form was previously submitted and reset it
+    if (localStorage.getItem('formSubmitted') === 'true') {
+        // Clear the flag
+        localStorage.removeItem('formSubmitted');
+        
+        // Reset the form if it exists
+        const uploadForm = document.getElementById('upload-form');
+        if (uploadForm) {
+            uploadForm.reset();
+            
+            // Need to directly call resetImagePreview if defined
+            if (typeof resetImagePreview === 'function') {
+                resetImagePreview();
+            } else {
+                // Fallback if function isn't defined yet
+                const previewImg = document.getElementById('preview-img');
+                const placeholder = document.querySelector('.preview-placeholder');
+                const imageInfo = document.getElementById('image-info');
+                const detectBtn = document.getElementById('detect-btn');
+                if (previewImg) previewImg.style.display = 'none';
+                if (placeholder) placeholder.style.display = 'flex';
+                if (imageInfo) imageInfo.style.display = 'none'; 
+                if (detectBtn) detectBtn.disabled = true;
+            }
+        }
+    }
+    
+    const fileInput = document.getElementById('file');
+    const previewImg = document.getElementById('preview-img');
+    const imageInfo = document.getElementById('image-info');
+    const imageDimensions = document.getElementById('image-dimensions');
+    const placeholder = document.querySelector('.preview-placeholder');
+    const detectBtn = document.getElementById('detect-btn');
+    const uploadForm = document.getElementById('upload-form');
+    
+    // Handle drag and drop events
+    const dropZone = document.getElementById('image-preview');
+    
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, unhighlight, false);
+    });
+    
+    function highlight() {
+        dropZone.classList.add('bg-dark', 'bg-opacity-75', 'border-primary');
+    }
+    
+    function unhighlight() {
+        dropZone.classList.remove('bg-dark', 'bg-opacity-75', 'border-primary');
+    }
+    
+    dropZone.addEventListener('drop', handleDrop, false);
+    
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        
+        if (files && files.length > 0) {
+            fileInput.files = files;
+            handleFiles(files);
+        }
+    }
+    
+    function handleFiles(files) {
+        if (files && files[0]) {
+            const file = files[0];
+            
+            // Check if the file is an image
+            if (!file.type.match('image.*')) {
+                showError('Please select an image file (JPG or PNG)');
+                return;
+            }
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                
+                // Create a temporary image to get dimensions
+                const img = new Image();
+                img.onload = function() {
+                    imageDimensions.textContent = `${img.width} × ${img.height}`;
+                    imageInfo.style.display = 'block';
+                };
+                img.src = e.target.result;
+                
+                previewImg.style.display = 'block';
+                placeholder.style.display = 'none';
+                detectBtn.disabled = false;
+                
+                // Add animation
+                previewImg.classList.add('animate__animated', 'animate__fadeIn');
+            };
+            
+            reader.readAsDataURL(file);
+        } else {
+            resetImagePreview();
+        }
+    }
+    
+    // Function to reset the image preview state
+    function resetImagePreview() {
+        previewImg.style.display = 'none';
+        previewImg.src = '';
+        previewImg.classList.remove('animate__animated', 'animate__fadeIn');
+        imageInfo.style.display = 'none';
+        placeholder.style.display = 'flex';
+        detectBtn.disabled = true;
+    }
+    
+    function showError(message) {
+        // Create error alert
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'alert alert-danger alert-dismissible fade show';
+        errorDiv.innerHTML = `
+            <i class="fas fa-exclamation-circle me-2"></i> ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        // Insert before the form
+        const form = document.getElementById('upload-form');
+        form.parentNode.insertBefore(errorDiv, form);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            errorDiv.classList.add('fade');
+            setTimeout(() => errorDiv.remove(), 500);
+        }, 5000);
+    }
+    
+    fileInput.addEventListener('change', function() {
+        handleFiles(this.files);
+    });
+    
+    // Add reset handler to the form
+    uploadForm.addEventListener('reset', function() {
+        resetImagePreview();
+    });
+    
+    // Add submit handler to ensure form is reset after submission
+    uploadForm.addEventListener('submit', function() {
+        // Set a flag in localStorage so we know to reset the form when returning to this page
+        localStorage.setItem('formSubmitted', 'true');
+    });
+    
+    // Ensure at least one algorithm is selected
+    const algorithmCheckboxes = document.querySelectorAll('input[name="algorithms"]');
+    algorithmCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const checkedBoxes = document.querySelectorAll('input[name="algorithms"]:checked');
+            if (checkedBoxes.length === 0) {
+                this.checked = true;
+                
+                // Show a tooltip or message
+                const tooltip = document.createElement('div');
+                tooltip.className = 'alert alert-warning alert-dismissible fade show mt-2';
+                tooltip.innerHTML = `
+                    <i class="fas fa-info-circle me-2"></i> At least one algorithm must be selected
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                
+                this.parentNode.appendChild(tooltip);
+                
+                setTimeout(() => {
+                    tooltip.classList.add('fade');
+                    setTimeout(() => tooltip.remove(), 500);
+                }, 3000);
+            }
+        });
+    });
+});
+</script>
+
+<style>
+/* Custom animations */
+@keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+}
+
+@keyframes pulse-blue {
+    0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 123, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
+}
+
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+.image-preview {
+    transition: all 0.3s ease;
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+}
+
+/* Button hover effects */
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn-lg:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+/* Card hover effects */
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+}
+</style>
+{% endblock %}

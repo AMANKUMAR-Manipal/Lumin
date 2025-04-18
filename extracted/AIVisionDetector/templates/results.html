@@ -1,0 +1,465 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">Detection Results</h3>
+                <a href="{{ url_for('index') }}" class="btn btn-outline-light">
+                    <i class="fas fa-arrow-left me-2"></i>New Detection
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0">Original Image</h5>
+                            </div>
+                            <div class="card-body text-center">
+                                <img src="{{ url_for('static', filename=image_path) }}" alt="Original Image" class="img-fluid original-image">
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        Resolution: {{ width }}x{{ height }} pixels
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-8">
+                        <ul class="nav nav-tabs" id="detectionTabs" role="tablist">
+                            {% for algo_name, result in detection_results.items() %}
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link {% if loop.first %}active{% endif %}" 
+                                        id="{{ algo_name }}-tab" 
+                                        data-bs-toggle="tab" 
+                                        data-bs-target="#{{ algo_name }}-content" 
+                                        type="button" 
+                                        role="tab" 
+                                        aria-controls="{{ algo_name }}-content" 
+                                        aria-selected="{% if loop.first %}true{% else %}false{% endif %}">
+                                    {{ algo_name|upper }}
+                                </button>
+                            </li>
+                            {% endfor %}
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" 
+                                        id="comparison-tab" 
+                                        data-bs-toggle="tab" 
+                                        data-bs-target="#comparison-content" 
+                                        type="button" 
+                                        role="tab" 
+                                        aria-controls="comparison-content" 
+                                        aria-selected="false">
+                                    Comparison
+                                </button>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content p-3 border border-top-0 rounded-bottom" id="detectionTabContent">
+                            {% for algo_name, result in detection_results.items() %}
+                            <div class="tab-pane fade {% if loop.first %}show active{% endif %}" 
+                                 id="{{ algo_name }}-content" 
+                                 role="tabpanel" 
+                                 aria-labelledby="{{ algo_name }}-tab">
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="text-center mb-3">
+                                            <img src="{{ url_for('static', filename=result.result_path) }}" 
+                                                 alt="{{ algo_name }} Result" 
+                                                 class="img-fluid result-image">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-info text-white">
+                                                <h5 class="card-title mb-0">Detection Details</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <p><strong>Processing Time:</strong> {{ "%.2f"|format(result.time) }} seconds</p>
+                                                <p><strong>Objects Detected:</strong> {{ result.objects|length }}</p>
+                                                
+                                                {% if result.objects|length > 0 %}
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Object</th>
+                                                                <th>Confidence</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for i in range(result.objects|length) %}
+                                                            {% set obj_class = result.objects[i] %}
+                                                            {% set is_traffic = obj_class in ['car', 'truck', 'bus', 'motorcycle', 'bicycle', 'person', 'traffic light', 'stop sign'] %}
+                                                            <tr class="{{ 'table-primary' if is_traffic else '' }}">
+                                                                <td>{{ i+1 }}</td>
+                                                                <td>
+                                                                    {% if obj_class == 'person' %}
+                                                                        <i class="fas fa-walking text-danger me-1"></i>
+                                                                    {% elif obj_class in ['car', 'truck', 'bus', 'motorcycle'] %}
+                                                                        <i class="fas fa-car text-primary me-1"></i>
+                                                                    {% elif obj_class == 'traffic light' %}
+                                                                        <i class="fas fa-traffic-light text-warning me-1"></i>
+                                                                    {% elif obj_class == 'stop sign' %}
+                                                                        <i class="fas fa-stop-circle text-danger me-1"></i>
+                                                                    {% endif %}
+                                                                    {{ obj_class }}
+                                                                </td>
+                                                                <td>{{ "%.2f"|format(result.scores[i] * 100) }}%</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                {% else %}
+                                                <div class="alert alert-warning">
+                                                    No objects detected with {{ algo_name|upper }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                            <!-- Comparison Tab -->
+                            <div class="tab-pane fade" id="comparison-content" role="tabpanel" aria-labelledby="comparison-tab">
+                                <div class="card">
+                                    <div class="card-header bg-dark text-white">
+                                        <h5 class="card-title mb-0">Algorithm Comparison</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="comparison-loading" class="text-center py-5">
+                                            <div class="spinner-border" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                            <p class="mt-3">Generating comparison...</p>
+                                        </div>
+                                        
+                                        <div id="comparison-content-data" style="display: none;">
+                                            <div class="row mb-4">
+                                                <div class="col-md-6">
+                                                    <h5>Detection Counts</h5>
+                                                    <canvas id="detectionCountChart"></canvas>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h5>Processing Time (seconds)</h5>
+                                                    <canvas id="processingTimeChart"></canvas>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row mb-4">
+                                                <div class="col-md-12">
+                                                    <h5>Average Confidence Score</h5>
+                                                    <canvas id="confidenceChart"></canvas>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h5>Object Class Distribution</h5>
+                                                    <div id="objectDistributionContainer" class="table-responsive">
+                                                        <table class="table table-sm table-striped" id="objectDistributionTable">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Object Class</th>
+                                                                    {% for algo_name in detection_results.keys() %}
+                                                                    <th>{{ algo_name|upper }}</th>
+                                                                    {% endfor %}
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="objectDistributionTableBody">
+                                                                <!-- Will be filled by JavaScript -->
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mt-4">
+                                                <h5>Analysis Summary</h5>
+                                                <div class="alert alert-secondary" id="analysis-summary">
+                                                    <!-- Will be filled by JavaScript -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle comparison tab click
+    const comparisonTab = document.getElementById('comparison-tab');
+    let comparisonGenerated = false;
+    
+    comparisonTab.addEventListener('click', function() {
+        if (!comparisonGenerated) {
+            generateComparison();
+            comparisonGenerated = true;
+        }
+    });
+    
+    function generateComparison() {
+        const loadingElem = document.getElementById('comparison-loading');
+        const contentElem = document.getElementById('comparison-content-data');
+        
+        // Show loading indicator
+        loadingElem.style.display = 'block';
+        contentElem.style.display = 'none';
+        
+        // Get image path from original image
+        const imagePath = '{{ image_path }}';
+        
+        // Prepare data for API request
+        const requestData = {
+            image_path: '{{ image_path }}'
+        };
+        
+        // Make API request to get comparison data
+        fetch('{{ url_for("compare_results") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Hide loading indicator
+            loadingElem.style.display = 'none';
+            contentElem.style.display = 'block';
+            
+            // Generate charts with the received data
+            generateCharts(data);
+            generateObjectDistributionTable(data);
+            generateAnalysisSummary(data);
+        })
+        .catch(error => {
+            console.error('Error fetching comparison data:', error);
+            loadingElem.innerHTML = '<div class="alert alert-danger">Error loading comparison data. Please try again.</div>';
+        });
+    }
+    
+    function generateCharts(data) {
+        // Prepare data for charts
+        const algorithms = Object.keys(data);
+        const detectionCounts = algorithms.map(algo => data[algo].total_objects);
+        const processingTimes = algorithms.map(algo => data[algo].time_taken);
+        const confidenceScores = algorithms.map(algo => data[algo].avg_confidence * 100);
+        
+        // Detection counts chart
+        new Chart(document.getElementById('detectionCountChart'), {
+            type: 'bar',
+            data: {
+                labels: algorithms.map(algo => algo.toUpperCase()),
+                datasets: [{
+                    label: 'Objects Detected',
+                    data: detectionCounts,
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Processing time chart
+        new Chart(document.getElementById('processingTimeChart'), {
+            type: 'bar',
+            data: {
+                labels: algorithms.map(algo => algo.toUpperCase()),
+                datasets: [{
+                    label: 'Processing Time (s)',
+                    data: processingTimes,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        
+        // Confidence score chart
+        new Chart(document.getElementById('confidenceChart'), {
+            type: 'bar',
+            data: {
+                labels: algorithms.map(algo => algo.toUpperCase()),
+                datasets: [{
+                    label: 'Average Confidence (%)',
+                    data: confidenceScores,
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    }
+    
+    function generateObjectDistributionTable(data) {
+        const tableBody = document.getElementById('objectDistributionTableBody');
+        const algorithms = Object.keys(data);
+        
+        // Collect all unique object classes across all algorithms
+        const allObjectClasses = new Set();
+        algorithms.forEach(algo => {
+            const objectCounts = data[algo].object_counts || {};
+            Object.keys(objectCounts).forEach(objClass => {
+                allObjectClasses.add(objClass);
+            });
+        });
+        
+        // Sort object classes alphabetically
+        const sortedObjectClasses = Array.from(allObjectClasses).sort();
+        
+        // Generate table rows
+        let tableContent = '';
+        
+        sortedObjectClasses.forEach(objClass => {
+            tableContent += '<tr><td>' + objClass + '</td>';
+            
+            algorithms.forEach(algo => {
+                const objectCounts = data[algo].object_counts || {};
+                const count = objectCounts[objClass] || 0;
+                tableContent += '<td>' + count + '</td>';
+            });
+            
+            tableContent += '</tr>';
+        });
+        
+        tableBody.innerHTML = tableContent;
+    }
+    
+    function generateAnalysisSummary(data) {
+        const summaryDiv = document.getElementById('analysis-summary');
+        const algorithms = Object.keys(data);
+        
+        // Find fastest algorithm
+        let fastestAlgo = algorithms[0];
+        let fastestTime = data[algorithms[0]].time_taken;
+        
+        algorithms.forEach(algo => {
+            if (data[algo].time_taken < fastestTime) {
+                fastestTime = data[algo].time_taken;
+                fastestAlgo = algo;
+            }
+        });
+        
+        // Find most confident algorithm
+        let mostConfidentAlgo = algorithms[0];
+        let highestConfidence = data[algorithms[0]].avg_confidence;
+        
+        algorithms.forEach(algo => {
+            if (data[algo].avg_confidence > highestConfidence) {
+                highestConfidence = data[algo].avg_confidence;
+                mostConfidentAlgo = algo;
+            }
+        });
+        
+        // Find algorithm that detected the most objects
+        let mostDetectionsAlgo = algorithms[0];
+        let mostDetections = data[algorithms[0]].total_objects;
+        
+        algorithms.forEach(algo => {
+            if (data[algo].total_objects > mostDetections) {
+                mostDetections = data[algo].total_objects;
+                mostDetectionsAlgo = algo;
+            }
+        });
+        
+        // Generate summary
+        let summary = `
+            <p><strong>${fastestAlgo.toUpperCase()}</strong> was the fastest algorithm with a processing time of ${fastestTime.toFixed(2)} seconds.</p>
+            <p><strong>${mostConfidentAlgo.toUpperCase()}</strong> had the highest average confidence at ${(highestConfidence * 100).toFixed(2)}%.</p>
+            <p><strong>${mostDetectionsAlgo.toUpperCase()}</strong> detected the most objects (${mostDetections}).</p>
+        `;
+        
+        // Add algorithm-specific insights
+        algorithms.forEach(algo => {
+            const objectCounts = data[algo].object_counts || {};
+            const objectClasses = Object.keys(objectCounts);
+            
+            if (objectClasses.length > 0) {
+                // Find most detected class
+                let mostDetectedClass = objectClasses[0];
+                let mostClassCount = objectCounts[objectClasses[0]];
+                
+                objectClasses.forEach(objClass => {
+                    if (objectCounts[objClass] > mostClassCount) {
+                        mostClassCount = objectCounts[objClass];
+                        mostDetectedClass = objClass;
+                    }
+                });
+                
+                summary += `<p><strong>${algo.toUpperCase()}</strong> most frequently detected '${mostDetectedClass}' (${mostClassCount} instances).</p>`;
+            }
+        });
+        
+        summaryDiv.innerHTML = summary;
+    }
+});
+</script>
+{% endblock %}

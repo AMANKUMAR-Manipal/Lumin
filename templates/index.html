@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Vision Detector - YOLOv3 Object Detection</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="{{ url_for('static', filename='svg/logo.svg') }}" alt="AI Vision Detector Logo" width="40" height="40" class="me-2">
+                <span>AI Vision Detector</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Real-time Object Detection with YOLOv3</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            This application uses a pre-trained YOLOv3 (You Only Look Once) model to detect objects in real-time 
+                            from your camera or from uploaded images. The model can detect 80 different objects from the COCO dataset.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" id="detection-tabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="camera-tab" data-bs-toggle="tab" data-bs-target="#camera-pane" type="button" role="tab" aria-controls="camera-pane" aria-selected="true">
+                                    <img src="{{ url_for('static', filename='svg/camera.svg') }}" alt="Camera" width="20" height="20" class="me-2">
+                                    Camera
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload-pane" type="button" role="tab" aria-controls="upload-pane" aria-selected="false">
+                                    <img src="{{ url_for('static', filename='svg/upload.svg') }}" alt="Upload" width="20" height="20" class="me-2">
+                                    Upload Image
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="detection-tabs-content">
+                            <!-- Camera Tab -->
+                            <div class="tab-pane fade show active" id="camera-pane" role="tabpanel" aria-labelledby="camera-tab">
+                                <div class="row mb-3">
+                                    <div class="col-12 text-center">
+                                        <button class="btn btn-primary" id="start-camera">Start Camera</button>
+                                        <button class="btn btn-danger" id="stop-camera" disabled>Stop Camera</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="video-container">
+                                            <img id="camera-stream" src="{{ url_for('static', filename='svg/camera.svg') }}" alt="Camera Stream" class="img-fluid w-100">
+                                            <div id="camera-loading" class="loading-overlay d-none">
+                                                <img src="{{ url_for('static', filename='svg/loading.svg') }}" alt="Loading" width="50" height="50">
+                                                <p>Starting camera...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Upload Tab -->
+                            <div class="tab-pane fade" id="upload-pane" role="tabpanel" aria-labelledby="upload-tab">
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label for="image-upload" class="form-label">Upload an image for object detection</label>
+                                            <input class="form-control" type="file" id="image-upload" accept=".jpg,.jpeg,.png">
+                                        </div>
+                                        <button class="btn btn-primary" id="process-image" disabled>Process Image</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="image-container">
+                                            <img id="upload-preview" src="{{ url_for('static', filename='svg/upload.svg') }}" alt="Upload Preview" class="img-fluid w-100">
+                                            <div id="upload-loading" class="loading-overlay d-none">
+                                                <img src="{{ url_for('static', filename='svg/loading.svg') }}" alt="Loading" width="50" height="50">
+                                                <p>Processing image...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Detection Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="detection-info">
+                            <p>Start the camera or upload an image to see detection results.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-auto py-3 bg-dark">
+        <div class="container">
+            <div class="text-center">
+                <p class="mb-0">AI Vision Detector &copy; 2023 - Powered by YOLOv3 and Flask</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
