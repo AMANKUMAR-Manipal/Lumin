@@ -140,8 +140,13 @@ def dashboard():
         stats['algorithm_stats'][algo]['normalized_count'] = stats['algorithm_stats'][algo]['count'] / max_count
         stats['algorithm_stats'][algo]['normalized_confidence'] = stats['algorithm_stats'][algo]['confidence'] / max_conf
         # Invert time so faster is better (higher on radar chart)
-        time_normalized = (stats['algorithm_stats'][algo]['time'] - min_time) / (max_time - min_time)
-        stats['algorithm_stats'][algo]['normalized_speed'] = 1 - time_normalized
+        # Ensure we don't divide by zero
+        if max_time - min_time > 0.0001:  # Add small threshold to avoid floating point issues
+            time_normalized = (stats['algorithm_stats'][algo]['time'] - min_time) / (max_time - min_time)
+            stats['algorithm_stats'][algo]['normalized_speed'] = 1 - time_normalized
+        else:
+            # If all times are the same, set normalized speed to 0.5 (middle)
+            stats['algorithm_stats'][algo]['normalized_speed'] = 0.5
     
     # Finalize person confidence
     if stats['person_count'] > 0:
