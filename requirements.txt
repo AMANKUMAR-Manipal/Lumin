@@ -1,0 +1,9 @@
+flask==2.3.2
+flask-sqlalchemy==3.0.5
+werkzeug==2.3.7
+gunicorn==23.0.0
+numpy==1.24.3
+opencv-python==4.8.0.74
+psycopg2-binary==2.9.6
+sqlalchemy==2.0.15
+email-validator==2.0.0
