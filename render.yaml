@@ -23,5 +23,5 @@ databases:
 staticSites:
   - name: ai-vision-static
     buildCommand: echo "No build required for static assets"
-    publishDir: static
+    publishDir: ./static
     pullRequestPreviewsEnabled: false
