@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumin - AI Vision Detection</title>
+    <!-- Bootstrap CSS with Dark Theme -->
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Animate.css for animations -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <!-- AOS (Animate on Scroll) CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
+    
+    <!-- Meta tags for better SEO -->
+    <meta name="description" content="Lumin - Advanced AI computer vision system for vehicle detection using multiple algorithms (CNN, KNN, YOLOv3)">
+    <meta name="keywords" content="object detection, vehicle detection, AI, machine learning, traffic analysis, computer vision">
+</head>
+<body>
+    <!-- Modern navbar with gradient -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
+        <div class="container py-2">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <div class="logo-icon me-2 p-1 rounded-circle bg-danger">
+                    <img src="{{ url_for('static', filename='images/electric-car-icon.svg') }}" alt="Electric Car" width="36" height="36" class="d-inline-block align-top">
+                </div>
+                <span class="fw-bold">Lumin</span>
+                <span class="ms-2 badge bg-dark text-light border border-secondary">AI Vision</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link rounded px-3 mx-1 {{ 'active bg-danger' if request.path == '/' }}" href="/"><i class="fas fa-home me-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link rounded px-3 mx-1 {{ 'active bg-danger' if request.path == '/detect' }}" href="/detect"><i class="fas fa-camera me-1"></i>Detect</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link rounded px-3 mx-1 {{ 'active bg-danger' if request.path == '/dashboard' }}" href="/dashboard"><i class="fas fa-chart-bar me-1"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link rounded px-3 mx-1 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-info-circle me-1"></i>About
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><h6 class="dropdown-header">Detection Algorithms</h6></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-brain me-2 text-danger"></i>CNN</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-project-diagram me-2 text-info"></i>KNN</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-box me-2 text-success"></i>YOLOv3</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-book me-2"></i>Documentation</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash messages with animation -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show animate__animated animate__fadeIn" role="alert">
+                        <i class="fas fa-{{ 'info-circle' if category == 'info' else ('check-circle' if category == 'success' else ('exclamation-triangle' if category == 'warning' else 'exclamation-circle')) }} me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main content -->
+    {% block content %}{% endblock %}
+
+    <!-- Modern footer with gradient and links -->
+    <footer class="footer mt-5 py-4 bg-dark border-top border-secondary">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="text-white mb-3 d-flex align-items-center">
+                        <img src="{{ url_for('static', filename='images/electric-car-icon.svg') }}" alt="Electric Car" width="24" height="24" class="me-2"> Lumin
+                    </h5>
+                    <p class="text-muted">Advanced AI vision system focused on vehicle detection and traffic analysis using three powerful machine learning algorithms for maximum accuracy.</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="text-white mb-3">Features</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none"><i class="fas fa-angle-right me-2"></i>Multiple Detection Algorithms</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none"><i class="fas fa-angle-right me-2"></i>Real-time Processing</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none"><i class="fas fa-angle-right me-2"></i>Traffic Object Analysis</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="text-white mb-3">Technologies</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-primary">Python</span>
+                        <span class="badge bg-secondary">Flask</span>
+                        <span class="badge bg-success">OpenCV</span>
+                        <span class="badge bg-danger">TensorFlow</span>
+                        <span class="badge bg-warning">scikit-learn</span>
+                        <span class="badge bg-info">Bootstrap</span>
+                        <span class="badge bg-light text-dark">PostgreSQL</span>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary mt-4 mb-3">
+            <div class="text-center text-muted">
+                <small>© 2025 Lumin AI Vision | Powered by CNN, KNN, and YOLOv3 Technology</small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS (Animate on Scroll) JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <!-- Initialize AOS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true,
+                mirror: false
+            });
+        });
+    </script>
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+    
+    <style>
+    /* Additional custom styles */
+    body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .logo-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+        transition: all 0.3s ease;
+    }
+    
+    .navbar-brand:hover .logo-icon {
+        transform: rotate(15deg);
+    }
+    
+    .nav-link {
+        transition: all 0.3s ease;
+    }
+    
+    .nav-link:not(.active):hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Button hover effects */
+    .btn {
+        transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Card hover effects */
+    .card {
+        transition: all 0.3s ease;
+    }
+    
+    .footer {
+        margin-top: auto;
+    }
+    </style>
+</body>
+</html>

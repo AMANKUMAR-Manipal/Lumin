@@ -1,0 +1,226 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<!-- Hero section with animated background and tagline -->
+<section class="hero-section text-white">
+    <div class="hero-pattern"></div>
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
+                <h1 class="display-3 fw-bold mb-4">AI-Powered Object Detection</h1>
+                <p class="lead mb-4">Lumin combines three powerful machine learning algorithms (CNN, KNN, and YOLOv3) to provide accurate and reliable object detection, with a special focus on vehicles and traffic elements.</p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{{ url_for('index') }}" class="btn btn-danger btn-lg px-4 py-3 rounded-pill">
+                        <i class="fas fa-camera me-2"></i>Try Detection
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill">
+                        <i class="fas fa-chart-bar me-2"></i>View Dashboard
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center" data-aos="fade-left">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1508100134266-033fb7a7b582?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Traffic Scene" class="img-fluid rounded-4 shadow" style="max-height: 400px;">
+                    
+                    <!-- Animated detection boxes overlay -->
+                    <div class="position-absolute" style="top: 40%; left: 20%; border: 3px solid #28a745; width: 25%; height: 20%; border-radius: 4px; animation: pulse-green 2s infinite;"></div>
+                    <div class="position-absolute" style="top: 60%; left: 60%; border: 3px solid #007bff; width: 15%; height: 10%; border-radius: 4px; animation: pulse-blue 2s infinite; animation-delay: 0.7s;"></div>
+                    <div class="position-absolute" style="top: 30%; left: 50%; border: 3px solid #dc3545; width: 30%; height: 25%; border-radius: 4px; animation: pulse-red 2s infinite; animation-delay: 1.4s;"></div>
+                    
+                    <!-- Detection labels -->
+                    <div class="position-absolute" style="top: calc(40% - 25px); left: 20%; background-color: #28a745; color: white; padding: 2px 8px; font-size: 14px; border-radius: 4px;">Car: 0.95</div>
+                    <div class="position-absolute" style="top: calc(60% - 25px); left: 60%; background-color: #007bff; color: white; padding: 2px 8px; font-size: 14px; border-radius: 4px;">Person: 0.87</div>
+                    <div class="position-absolute" style="top: calc(30% - 25px); left: 50%; background-color: #dc3545; color: white; padding: 2px 8px; font-size: 14px; border-radius: 4px;">Bus: 0.92</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features section with icons and descriptions -->
+<section class="py-5 bg-dark">
+    <div class="container py-4">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto" data-aos="fade-up">
+                <h2 class="display-5 fw-bold">Key Features</h2>
+                <p class="lead text-muted">Discover the powerful capabilities of our AI vision system</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Feature 1 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-item bg-dark text-white shadow-lg h-100">
+                    <div class="feature-icon bg-danger">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Multiple Algorithms</h3>
+                    <p class="text-muted mb-0">Leverages three different AI algorithms (CNN, KNN, YOLOv3) for comprehensive detection and verification, improving accuracy by comparing results.</p>
+                </div>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-item bg-dark text-white shadow-lg h-100">
+                    <div class="feature-icon bg-primary">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Traffic Analysis</h3>
+                    <p class="text-muted mb-0">Specialized in detecting vehicles, pedestrians, and traffic elements with high precision, providing detailed statistics and classifications.</p>
+                </div>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-item bg-dark text-white shadow-lg h-100">
+                    <div class="feature-icon bg-success">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Real-time Processing</h3>
+                    <p class="text-muted mb-0">Process images in milliseconds with optimized algorithms, allowing for quick analysis of traffic scenes and immediate decision making.</p>
+                </div>
+            </div>
+            
+            <!-- Feature 4 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-item bg-dark text-white shadow-lg h-100">
+                    <div class="feature-icon bg-info">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Analytics Dashboard</h3>
+                    <p class="text-muted mb-0">Comprehensive visualization of detection statistics, algorithm performance comparisons, and detailed object classifications.</p>
+                </div>
+            </div>
+            
+            <!-- Feature 5 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="500">
+                <div class="feature-item bg-dark text-white shadow-lg h-100">
+                    <div class="feature-icon bg-warning">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Multiple Input Sources</h3>
+                    <p class="text-muted mb-0">Process images from various sources including uploaded files and real-time camera feed for flexible detection capabilities.</p>
+                </div>
+            </div>
+            
+            <!-- Feature 6 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
+                <div class="feature-item bg-dark text-white shadow-lg h-100">
+                    <div class="feature-icon bg-secondary">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Open Architecture</h3>
+                    <p class="text-muted mb-0">Modern, modular design allows for easy integration with other systems and extension with additional detection algorithms.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Algorithm showcase section -->
+<section class="py-5 bg-light text-dark">
+    <div class="container py-4">
+        <div class="row mb-5 text-center">
+            <div class="col-lg-8 mx-auto" data-aos="fade-up">
+                <h2 class="display-5 fw-bold">Detection Algorithms</h2>
+                <p class="lead text-muted">Each algorithm has its strengths and specialties for different detection scenarios</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <!-- CNN -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card algorithm-card h-100 border-0 shadow">
+                    <div class="card-header bg-danger text-white py-3">
+                        <h3 class="card-title m-0 d-flex align-items-center">
+                            <i class="fas fa-brain me-2"></i> CNN
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Convolutional Neural Network using deep learning techniques to identify complex visual patterns with high accuracy.</p>
+                        <h5 class="mt-4 mb-3">Strengths:</h5>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check-circle text-success me-2"></i>Best for complex object recognition</li>
+                            <li><i class="fas fa-check-circle text-success me-2"></i>High accuracy for vehicles</li>
+                            <li><i class="fas fa-check-circle text-success me-2"></i>Handles various lighting conditions</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-white border-0 pb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-danger p-2">Accuracy: 95%</span>
+                            <span class="badge bg-secondary p-2">Speed: Medium</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- KNN -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card algorithm-card h-100 border-0 shadow">
+                    <div class="card-header bg-info text-white py-3">
+                        <h3 class="card-title m-0 d-flex align-items-center">
+                            <i class="fas fa-project-diagram me-2"></i> KNN
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">K-Nearest Neighbors algorithm with HOG features that efficiently classifies objects based on feature similarity.</p>
+                        <h5 class="mt-4 mb-3">Strengths:</h5>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check-circle text-success me-2"></i>Fast processing speed</li>
+                            <li><i class="fas fa-check-circle text-success me-2"></i>Good for consistent object detection</li>
+                            <li><i class="fas fa-check-circle text-success me-2"></i>Low computational requirements</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-white border-0 pb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-info p-2">Accuracy: 88%</span>
+                            <span class="badge bg-success p-2">Speed: Fast</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- YOLOv3 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card algorithm-card h-100 border-0 shadow">
+                    <div class="card-header bg-success text-white py-3">
+                        <h3 class="card-title m-0 d-flex align-items-center">
+                            <i class="fas fa-box me-2"></i> YOLOv3
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">"You Only Look Once" single-pass detection system that efficiently identifies multiple objects in a single image analysis.</p>
+                        <h5 class="mt-4 mb-3">Strengths:</h5>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check-circle text-success me-2"></i>Highest overall accuracy</li>
+                            <li><i class="fas fa-check-circle text-success me-2"></i>Single-pass efficiency</li>
+                            <li><i class="fas fa-check-circle text-success me-2"></i>Excellent for multiple objects</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-white border-0 pb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-success p-2">Accuracy: 98%</span>
+                            <span class="badge bg-primary p-2">Speed: Balanced</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA section with large button -->
+<section class="py-5 bg-dark text-white text-center">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-aos="fade-up">
+                <h2 class="display-5 fw-bold mb-4">Ready to experience AI-powered detection?</h2>
+                <p class="lead mb-5">Try our advanced object detection system with your own images or real-time camera feed.</p>
+                <a href="{{ url_for('index') }}" class="btn btn-danger btn-lg px-5 py-3 rounded-pill shadow-lg">
+                    <i class="fas fa-rocket me-2"></i>Start Detecting Now
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

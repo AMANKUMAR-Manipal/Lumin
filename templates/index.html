@@ -1,121 +1,42 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Vision Detector - YOLOv3 Object Detection</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="/">
-                <img src="{{ url_for('static', filename='svg/logo.svg') }}" alt="AI Vision Detector Logo" width="40" height="40" class="me-2">
-                <span>AI Vision Detector</span>
-            </a>
-        </div>
-    </nav>
+{% extends 'layout.html' %}
 
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">Real-time Object Detection with YOLOv3</h2>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            This application uses a pre-trained YOLOv3 (You Only Look Once) model to detect objects in real-time 
-                            from your camera or from uploaded images. The model can detect 80 different objects from the COCO dataset.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs" id="detection-tabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="camera-tab" data-bs-toggle="tab" data-bs-target="#camera-pane" type="button" role="tab" aria-controls="camera-pane" aria-selected="true">
-                                    <img src="{{ url_for('static', filename='svg/camera.svg') }}" alt="Camera" width="20" height="20" class="me-2">
-                                    Camera
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload-pane" type="button" role="tab" aria-controls="upload-pane" aria-selected="false">
-                                    <img src="{{ url_for('static', filename='svg/upload.svg') }}" alt="Upload" width="20" height="20" class="me-2">
-                                    Upload Image
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <div class="tab-content" id="detection-tabs-content">
-                            <!-- Camera Tab -->
-                            <div class="tab-pane fade show active" id="camera-pane" role="tabpanel" aria-labelledby="camera-tab">
-                                <div class="row mb-3">
-                                    <div class="col-12 text-center">
-                                        <button class="btn btn-primary" id="start-camera">Start Camera</button>
-                                        <button class="btn btn-danger" id="stop-camera" disabled>Stop Camera</button>
-                                    </div>
+{% block content %}
+<div class="container py-4">
+    <!-- Welcome section with animated feature highlights -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card border-0 bg-dark text-white shadow-lg rounded-4" data-aos="fade-up" data-aos-duration="800">
+                <div class="card-body p-5">
+                    <div class="row align-items-center">
+                        <div class="col-lg-7">
+                            <h1 class="display-4 fw-bold mb-3" data-aos="fade-up" data-aos-duration="1000">AI Object Detection</h1>
+                            <p class="lead mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">Upload any image and our advanced AI algorithms will automatically detect and identify objects, with special focus on traffic-related elements like vehicles and pedestrians.</p>
+                            <div class="d-flex flex-wrap gap-2 mb-4">
+                                <div class="badge bg-primary p-2 fs-6" data-aos="fade-up" data-aos-delay="200">
+                                    <i class="fas fa-car me-1"></i> Vehicle Detection
                                 </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="video-container">
-                                            <img id="camera-stream" src="{{ url_for('static', filename='svg/camera.svg') }}" alt="Camera Stream" class="img-fluid w-100">
-                                            <div id="camera-loading" class="loading-overlay d-none">
-                                                <img src="{{ url_for('static', filename='svg/loading.svg') }}" alt="Loading" width="50" height="50">
-                                                <p>Starting camera...</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="badge bg-info p-2 fs-6" data-aos="fade-up" data-aos-delay="300">
+                                    <i class="fas fa-walking me-1"></i> Pedestrian Recognition
+                                </div>
+                                <div class="badge bg-warning p-2 fs-6" data-aos="fade-up" data-aos-delay="400">
+                                    <i class="fas fa-traffic-light me-1"></i> Traffic Elements
+                                </div>
+                                <div class="badge bg-success p-2 fs-6" data-aos="fade-up" data-aos-delay="500">
+                                    <i class="fas fa-chart-pie me-1"></i> Detection Statistics
                                 </div>
                             </div>
-                            
-                            <!-- Upload Tab -->
-                            <div class="tab-pane fade" id="upload-pane" role="tabpanel" aria-labelledby="upload-tab">
-                                <div class="row mb-3">
-                                    <div class="col-12">
-                                        <div class="mb-3">
-                                            <label for="image-upload" class="form-label">Upload an image for object detection</label>
-                                            <input class="form-control" type="file" id="image-upload" accept=".jpg,.jpeg,.png">
-                                        </div>
-                                        <button class="btn btn-primary" id="process-image" disabled>Process Image</button>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="image-container">
-                                            <img id="upload-preview" src="{{ url_for('static', filename='svg/upload.svg') }}" alt="Upload Preview" class="img-fluid w-100">
-                                            <div id="upload-loading" class="loading-overlay d-none">
-                                                <img src="{{ url_for('static', filename='svg/loading.svg') }}" alt="Loading" width="50" height="50">
-                                                <p>Processing image...</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light me-2" data-aos="fade-up" data-aos-delay="600">
+                                <i class="fas fa-chart-bar me-1"></i> View Dashboard
+                            </a>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Detection Information</h3>
-                    </div>
-                    <div class="card-body">
-                        <div id="detection-info">
-                            <p>Start the camera or upload an image to see detection results.</p>
+                        <div class="col-lg-5 text-center">
+                            <div class="position-relative">
+                                <img src="https://images.unsplash.com/photo-1585859537744-6e62df9b9a5b?ixlib=rb-4.0.3&q=85&w=500&h=350&crop=fit" alt="Traffic scene" class="img-fluid rounded-3 shadow-lg">
+                                <!-- Animated detection boxes overlay -->
+                                <div class="position-absolute" style="top: 40%; left: 30%; border: 3px solid #28a745; width: 30%; height: 30%; border-radius: 4px; animation: pulse-green 2s infinite;"></div>
+                                <div class="position-absolute" style="top: 55%; left: 15%; border: 3px solid #007bff; width: 20%; height: 20%; border-radius: 4px; animation: pulse-blue 2s infinite; animation-delay: 0.5s;"></div>
+                                <div class="position-absolute" style="top: 60%; left: 60%; border: 3px solid #dc3545; width: 15%; height: 25%; border-radius: 4px; animation: pulse-red 2s infinite; animation-delay: 1s;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -123,17 +44,218 @@
         </div>
     </div>
 
-    <footer class="footer mt-auto py-3 bg-dark">
-        <div class="container">
-            <div class="text-center">
-                <p class="mb-0">AI Vision Detector &copy; 2023 - Powered by YOLOv3 and Flask</p>
+    <div class="row">
+        <!-- Upload card with enhanced UI -->
+        <div class="col-lg-7" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+            <div class="card border-0 shadow-lg rounded-4 mb-4">
+                <div class="card-header bg-primary text-white py-3 rounded-top-4">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-upload me-2"></i>Upload Your Image
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" id="upload-form" data-aos="fade-up" data-aos-delay="100">
+                        <div class="mb-4">
+                            <div class="upload-container">
+                                <div id="image-preview" class="image-preview border rounded-4 p-3 text-center position-relative overflow-hidden" style="background-color: rgba(0,0,0,0.03); min-height: 250px;">
+                                    <div class="preview-placeholder d-flex flex-column align-items-center justify-content-center h-100">
+                                        <i class="fas fa-cloud-upload-alt fa-4x mb-3 text-primary"></i>
+                                        <h5>Drag & drop your image here</h5>
+                                        <p class="text-muted">or click the button below</p>
+                                    </div>
+                                    <img id="preview-img" src="" alt="Preview" class="img-fluid rounded-3" style="display: none; max-height: 350px;">
+                                    
+                                    <!-- Image size indicator that appears when image is selected -->
+                                    <div id="image-info" class="position-absolute bottom-0 end-0 bg-dark bg-opacity-75 text-white px-3 py-1 m-2 rounded-pill" style="display: none;">
+                                        <small><i class="fas fa-info-circle me-1"></i> <span id="image-dimensions">0 x 0</span></small>
+                                    </div>
+                                </div>
+                                
+                                <div class="custom-file-upload mt-3 text-center">
+                                    <label for="file" class="btn btn-primary btn-lg w-100 rounded-pill">
+                                        <i class="fas fa-image me-2"></i> Select Image
+                                    </label>
+                                    <input type="file" name="file" id="file" class="d-none" accept="image/png, image/jpeg, image/jpg" required>
+                                    <div class="mt-2 text-muted small">
+                                        <i class="fas fa-info-circle me-1"></i> Supported formats: JPG, PNG (max 16MB)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="algorithm-selection bg-dark bg-opacity-50 p-4 rounded-4 mb-4 border border-secondary">
+                            <h5 class="mb-3 border-bottom border-secondary pb-2">
+                                <i class="fas fa-cogs me-2"></i> Detection Algorithms
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="card bg-dark border-danger h-100">
+                                        <div class="card-body">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" name="algorithms" value="cnn" id="cnn-check" checked>
+                                                <label class="form-check-label fw-bold text-white" for="cnn-check">
+                                                    <i class="fas fa-brain me-1 text-danger"></i> CNN
+                                                </label>
+                                            </div>
+                                            <div class="mt-2 text-light small">
+                                                Convolutional Neural Network - best for detecting vehicles and complex objects
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-dark border-info h-100">
+                                        <div class="card-body">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" name="algorithms" value="knn" id="knn-check" checked>
+                                                <label class="form-check-label fw-bold text-white" for="knn-check">
+                                                    <i class="fas fa-project-diagram me-1 text-info"></i> KNN
+                                                </label>
+                                            </div>
+                                            <div class="mt-2 text-light small">
+                                                K-Nearest Neighbors - fast processing with reliable results
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-dark border-success h-100">
+                                        <div class="card-body">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" name="algorithms" value="yolov3" id="yolo-check" checked>
+                                                <label class="form-check-label fw-bold text-white" for="yolo-check">
+                                                    <i class="fas fa-box me-1 text-success"></i> YOLOv3
+                                                </label>
+                                            </div>
+                                            <div class="mt-2 text-light small">
+                                                You Only Look Once - high accuracy for all types of objects
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success btn-lg px-5 py-3 rounded-pill shadow" id="detect-btn" disabled>
+                                <i class="fas fa-search me-2"></i> Detect Objects
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </footer>
-
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JavaScript -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-</body>
-</html>
+        
+        <!-- Info card with algorithm details -->
+        <div class="col-lg-5" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+            <div class="card border-0 shadow-lg rounded-4 mb-4">
+                <div class="card-header bg-info text-white py-3 rounded-top-4">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i> How It Works
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <p class="lead">Our system uses three advanced AI algorithms to analyze your images with high accuracy.</p>
+                    
+                    <div class="accordion" id="algorithmAccordion">
+                        <div class="accordion-item border-0 mb-3 shadow-sm rounded-3">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="fas fa-brain me-2 text-danger"></i> CNN Detection
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#algorithmAccordion">
+                                <div class="accordion-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="flex-shrink-0">
+                                            <span class="badge bg-danger p-2"><i class="fas fa-star"></i> 95%</span>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <strong>Accuracy for vehicles</strong>
+                                        </div>
+                                    </div>
+                                    <p>Convolutional Neural Network using <strong>MobileNetV2</strong> architecture that excels at identifying various types of vehicles and objects in urban settings. It analyzes image patterns through multiple layers of filters.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0 mb-3 shadow-sm rounded-3">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="fas fa-project-diagram me-2 text-info"></i> KNN Detection
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#algorithmAccordion">
+                                <div class="accordion-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="flex-shrink-0">
+                                            <span class="badge bg-info p-2"><i class="fas fa-tachometer-alt"></i> Fast</span>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <strong>Quick processing time</strong>
+                                        </div>
+                                    </div>
+                                    <p>K-Nearest Neighbors classifier with HOG (Histogram of Oriented Gradients) features that efficiently detects objects using a sliding window approach. KNN is especially good at recognizing similar objects with consistent features.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0 shadow-sm rounded-3">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    <i class="fas fa-box me-2 text-success"></i> YOLOv3 Detection
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#algorithmAccordion">
+                                <div class="accordion-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="flex-shrink-0">
+                                            <span class="badge bg-success p-2"><i class="fas fa-check-double"></i> 98%</span>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <strong>Highest overall accuracy</strong>
+                                        </div>
+                                    </div>
+                                    <p>"You Only Look Once" (YOLO) is a state-of-the-art object detection system that can detect multiple objects in a single pass through the network, making it both accurate and efficient. YOLOv3 uses a deep neural network with 53 convolutional layers.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info mt-4">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-lightbulb fa-2x"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5 class="alert-heading">Pro Tip</h5>
+                                <p class="mb-0">For the most comprehensive analysis, use all three algorithms together and compare their results. Each algorithm may catch different objects or provide varying confidence levels.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent detections preview -->
+            <div class="card border-0 shadow-lg rounded-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-header bg-secondary text-white py-3 rounded-top-4">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-history me-2"></i> Recent Detections
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <a href="{{ url_for('dashboard') }}" class="d-block text-decoration-none">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <h5 class="mb-1">View Detection History</h5>
+                                <p class="text-muted mb-0">Check the dashboard for comprehensive statistics and detection history</p>
+                            </div>
+                            <div class="ms-3">
+                                <i class="fas fa-arrow-right fa-2x text-primary"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

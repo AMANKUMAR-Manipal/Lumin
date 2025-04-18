@@ -352,6 +352,7 @@ dependencies = [
     { name = "numpy" },
     { name = "opencv-python" },
     { name = "psycopg2-binary" },
+    { name = "sqlalchemy" },
     { name = "werkzeug" },
 ]
 
@@ -364,6 +365,7 @@ requires-dist = [
     { name = "numpy", specifier = ">=2.2.4" },
     { name = "opencv-python", specifier = ">=4.11.0.86" },
     { name = "psycopg2-binary", specifier = ">=2.9.10" },
+    { name = "sqlalchemy", specifier = ">=2.0.40" },
     { name = "werkzeug", specifier = ">=3.1.3" },
 ]
 

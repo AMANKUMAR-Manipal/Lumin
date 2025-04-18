@@ -1,0 +1,159 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card border-0 bg-dark text-white shadow-lg rounded-4" data-aos="fade-up">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h1 class="h3 mb-0">
+                            <i class="fas fa-search me-2"></i> Detection Results
+                        </h1>
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-light">
+                            <i class="fas fa-arrow-left me-2"></i> Back to Detection
+                        </a>
+                    </div>
+                    
+                    <div class="alert alert-info d-flex align-items-center" role="alert">
+                        <i class="fas fa-info-circle me-3 fa-lg"></i>
+                        <div>
+                            Multiple algorithms were used for detection. Each algorithm may identify different objects with varying confidence levels. Compare the results below.
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button id="compare-btn" class="btn btn-primary px-4 py-2" data-image-path="{{ image_path }}">
+                            <i class="fas fa-chart-bar me-2"></i> Compare Algorithm Results
+                        </button>
+                    </div>
+                    
+                    <div id="comparison-results" class="mt-4" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Original image card -->
+        <div class="col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="card result-card shadow-lg border-0 h-100">
+                <div class="card-header bg-secondary text-white py-3">
+                    <h3 class="h5 card-title mb-0">
+                        <i class="fas fa-image me-2"></i> Original Image
+                    </h3>
+                </div>
+                <div class="card-body p-3 text-center">
+                    <img src="{{ url_for('static', filename=image_path) }}" alt="Original Image" class="img-fluid result-image rounded mb-3">
+                    <div class="d-flex justify-content-between text-muted">
+                        <small><i class="fas fa-rulers me-1"></i> {{ width }} x {{ height }}</small>
+                        <small><i class="fas fa-eye me-1"></i> Input</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Detection result cards -->
+        {% for algo, result in detection_results.items() %}
+        <div class="col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="{{ 200 + loop.index0 * 100 }}">
+            <div class="card result-card shadow-lg border-0 h-100">
+                <div class="card-header py-3 text-white 
+                    {% if algo == 'cnn' %}
+                        bg-danger
+                    {% elif algo == 'knn' %}
+                        bg-info
+                    {% else %}
+                        bg-success
+                    {% endif %}
+                ">
+                    <h3 class="h5 card-title mb-0">
+                        <i class="fas fa-{{ 'brain' if algo == 'cnn' else ('project-diagram' if algo == 'knn' else 'box') }} me-2"></i> {{ algo|upper }} Detection
+                    </h3>
+                </div>
+                <div class="card-body p-3 text-center">
+                    <img src="{{ url_for('static', filename=result.result_path) }}" alt="{{ algo|upper }} Detection" class="img-fluid result-image rounded mb-3">
+                    
+                    <div class="row text-start g-3 mb-3">
+                        <div class="col-6">
+                            <div class="card border-0 bg-dark bg-opacity-50 h-100">
+                                <div class="card-body py-2 px-3">
+                                    <div class="mb-1 text-white-50 small">Processing Time</div>
+                                    <div class="fw-bold">{{ "%.3f"|format(result.time) }} seconds</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card border-0 bg-dark bg-opacity-50 h-100">
+                                <div class="card-body py-2 px-3">
+                                    <div class="mb-1 text-white-50 small">Objects Detected</div>
+                                    <div class="fw-bold">{{ result.objects|length }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h6 class="text-start mb-2">Detected Objects:</h6>
+                    <div class="d-flex flex-wrap justify-content-start mb-2">
+                        {% for obj in result.objects %}
+                            <span class="result-detail bg-secondary">{{ obj }}</span>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="progress mt-3" style="height: 25px;">
+                        {% set avg_confidence = (result.scores|sum / result.scores|length) if result.scores|length > 0 else 0 %}
+                        <div class="progress-bar 
+                            {% if avg_confidence > 0.75 %}
+                                bg-success
+                            {% elif avg_confidence > 0.6 %}
+                                bg-info
+                            {% elif avg_confidence > 0.4 %}
+                                bg-warning
+                            {% else %}
+                                bg-danger
+                            {% endif %}
+                        " role="progressbar" style="width: {{ (avg_confidence * 100)|int }}%;" 
+                        aria-valuenow="{{ (avg_confidence * 100)|int }}" aria-valuemin="0" aria-valuemax="100">
+                            {{ (avg_confidence * 100)|int }}% Confidence
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12 text-center mt-2 mb-5">
+            <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow">
+                <i class="fas fa-camera me-2"></i> Detect Another Image
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary btn-lg rounded-pill px-5 py-3 ms-3">
+                <i class="fas fa-chart-bar me-2"></i> View Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Show/hide comparison results when button is clicked
+    const compareBtn = document.getElementById('compare-btn');
+    const comparisonResults = document.getElementById('comparison-results');
+    
+    if (compareBtn && comparisonResults) {
+        compareBtn.addEventListener('click', function() {
+            if (comparisonResults.style.display === 'none') {
+                comparisonResults.style.display = 'block';
+                compareBtn.innerHTML = '<i class="fas fa-times me-2"></i> Hide Comparison';
+            } else {
+                comparisonResults.style.display = 'none';
+                compareBtn.innerHTML = '<i class="fas fa-chart-bar me-2"></i> Compare Algorithm Results';
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
